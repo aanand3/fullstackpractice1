@@ -12,7 +12,7 @@ public class Item
 
     private String content;
 
-    private boolean completed;
+    private boolean completed = false;
 
     public Long getId()
     {
