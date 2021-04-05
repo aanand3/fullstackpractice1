@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/itempractice")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ItemController
 {
     private final ItemRepository repo;
@@ -33,7 +34,7 @@ public class ItemController
         {
             Item currItem = repo.findById(id).orElse(null);
 
-            if (newItem.isCompleted()) { currItem.setCompleted(true); };
+            if (newItem.isCompleted() != currItem.isCompleted()) { currItem.setCompleted(newItem.isCompleted()); }
             if (newItem.getContent() != null) { currItem.setContent(newItem.getContent()); }
 
             return this.repo.save(currItem);
