@@ -3,6 +3,7 @@ import './App.css';
 import Items from './Items.js'
 
 import React, { Component } from 'react'
+import ItemCreator from './ItemCreator';
 
 export class App extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ export class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <ItemCreator className = "item-creator" fetchAllItems= {this.fetchAllItems.bind(this)}/>
           <img src={logo} className="App-logo" alt="logo" />
           <Items items= {this.state.items} fetchAllItems= {this.fetchAllItems.bind(this)} />
         </header>

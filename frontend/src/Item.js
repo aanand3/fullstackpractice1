@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 
 export class Item extends Component
 {
@@ -9,7 +10,7 @@ export class Item extends Component
         super(props)
 
         this.state = {
-
+            open: false,
         }
     }
 
@@ -17,6 +18,7 @@ export class Item extends Component
     {
         await this.patchComplete();
         await this.props.fetchAllItems();
+        this.setState({ open: true })
     }
 
     async patchComplete()
@@ -73,27 +75,50 @@ export class Item extends Component
 
     buildCompleteButton()
     {
-        return this.props.item.completed ? 
-            <Button variant="contained" color="primary" onClick={ () => {this.toggleComplete();} }>Complete</Button> :
-            <Button variant="contained" color="secondary" onClick={ () => {this.toggleComplete();} }>Incomplete</Button>
+        return this.props.item.completed ?
+            <Button variant="contained" color="primary" onClick={() => { this.toggleComplete(); }}>Complete</Button> :
+            <Button variant="contained" color="secondary" onClick={() => { this.toggleComplete(); }}>Incomplete</Button>
     }
 
     buildDeleteButton()
     {
-        return <Button variant="contained" color="primary" onClick={ () => {this.deleteItem();} }>Delete</Button> ;
+        return <Button variant="contained" color="primary" onClick={() => { this.deleteItem(); }}>Delete</Button>;
+    }
+
+    buildContent()
+    {
+        return this.props.item.completed ? <del>{this.props.item.content}</del> : <span>{this.props.item.content}</span>
+    }
+
+    buildSnackbar()
+    {
+        return <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={this.state.open}
+            autoHideDuration={7000}
+            onClose={() => { this.setState({ open: false }) }}
+            message= {this.props.item.completed ? "Item complete" : "Item marked incomplete"}
+        />
     }
 
     render() 
     {
+        var content = this.buildContent(); 
         var completeButton = this.buildCompleteButton();
-        var deleteButton = this.buildDeleteButton(); 
-        
+        var deleteButton = this.buildDeleteButton();
+        var snackbar = this.buildSnackbar();
+
         return (
-            <tr>
-                <td>{completeButton}</td>
-                <td align="left">{this.props.item.content}</td>
-                <td>{deleteButton}</td>
-            </tr>
+                <tr>
+                    <td>{completeButton}</td>
+                    <td align="left"> {content} </td>
+                    <td>{deleteButton}</td>
+                    {snackbar}
+                </tr>
+
         )
     }
 }

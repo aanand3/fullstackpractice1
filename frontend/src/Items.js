@@ -11,8 +11,9 @@ const Items = props =>
 
     return (
         <div>
-            <h1> To Do List </h1>
+            
             <table>
+                <thead> <td colSpan = "3"><h1>To Do List</h1></td></thead>
                 <tbody>
                     {itemList}
                 </tbody>
